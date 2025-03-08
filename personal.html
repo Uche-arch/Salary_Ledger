@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="personal.css" />
+    <link rel="stylesheet" href="./bootstrap-aid/css/bootstrap.min.css">
+    <title>Salary</title>
+  </head>
+  <body>
+    <div class="container text-center mt-5">
+      <div id="form-container">
+        <h1>Welcome to your salary tracker😁!</h1>
+        <p class="fs-5">See how your earnings stack up, and update your details anytime!</p>
+        <form action="" id="salary-form">
+          <label for="" class="form-label">Enter your name:</label>
+          <input type="text" id="name" class="form-control" /><br />
+          <label for="" class="form-label">Enter your salary:</label>
+          <input type="number" id="salary" class="form-control"/><br />
+        </form>
+          <button onclick="displaySalary()" class="btn btn-sm btn-md-lg btn-outline-primary px-3">Join</button>
+      </div>
+
+      <div id="table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Salary</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td id="username"></td>
+            <td id="salary-cell"></td>
+            <td id="date"></td>
+          </tbody>
+        </table>
+        <br /><br />
+        <h2>Salary Update</h2>
+        <!-- <input type="text" id="name" class="form-control"/><br /> -->
+        <label for="" class="form-label label"> New Salary </label>
+        <input
+          type="number"
+          id="new-salary"
+          class="form-control control"
+          placeholder="Enter new salary"
+        />
+        <button onclick="update()" class="btn btn-outline-primary mt-3">
+          Update
+        </button>
+      </div>
+      <p id="error"></p>
+    </div>
+    <script src="personal.js"></script>
+  </body>
+</html>

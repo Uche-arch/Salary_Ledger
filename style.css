@@ -1,0 +1,38 @@
+body {
+  background: rgb(247, 243, 243);
+}
+button {
+  color: black;
+  border: none;
+  margin: 0;
+  cursor: pointer;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+h1, h2 {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+/* Styling for the Save button */
+#save-button {
+  background-color: #4caf50; /* Green background */
+  color: black; /* Text color */
+  padding: 0.375rem 0.75rem;
+  border: 1px solid black; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Pointer cursor when hovered */
+  transition: background-color 0.3s, transform 0.2s ease; /* Smooth transition for hover effects */
+}
+
+#save-button:disabled {
+  background-color: #ccc; /* Light gray background for disabled state */
+  cursor: not-allowed; /* Disabled pointer cursor */
+  opacity: 0.6; /* Make the disabled button semi-transparent */
+  color: black;
+}

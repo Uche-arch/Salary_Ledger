@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap-aid/css/bootstrap.min.css" />
+    <!-- Include Font Awesome for the icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mb-3 mb-md-5 text-center">SALARY LEDGER</h1>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Salary</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+        <div id="total-salary">Total Salary: ₦</div>
+      </div>
+      <br /><br />
+      <h2>New Entries</h2>
+      <label for="">New Worker</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        placeholder="Worker's name"
+      /><br />
+      <label for="" class="form-label"> Salary </label>
+      <input
+        type="number"
+        id="salary"
+        class="form-control"
+        placeholder="Enter salary"
+      />
+      <div class="d-flex align-item-center gap-4 mt-3">
+        <button onclick="update()" class="btn btn-outline-primary">Add</button>
+        <button onclick="save()" id="save-button">Save</button>
+      </div>
+      <button class="btn btn-primary float-end"><a href="./personal.html" class="text-white text-decoration-none">Personal Tracker</a></button>
+
+      <p id="error" class="mt-2 mt-md-4"></p>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
