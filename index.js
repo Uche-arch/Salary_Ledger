@@ -8,6 +8,7 @@ let saveButton = document.getElementById("save-button"); // Reference to the Sav
 saveButton.disabled = true;
 saveButton.style.backgroundColor = "#ccc"; // Disable button styling
 
+// Function to update salary
 function update() {
   let username = document.getElementById("name").value.trim();
   let usersalary = document.getElementById("salary").value;
@@ -27,13 +28,12 @@ function update() {
     // Add the new entry to the salaryEntries array
     salaryEntries.push({ username, usersalary, date });
 
-    console.log(salaryEntries);
-
+    
     // Save to localStorage
     localStorage.setItem("salaryEntries", JSON.stringify(salaryEntries));
 
-    // Update the total salary
-    totalSalary += usersalary;
+    // Recalculate total salary
+    recalculateTotalSalary();
 
     // Update the table display
     updateTable();
@@ -41,114 +41,117 @@ function update() {
     // Clear the inputs
     document.getElementById("name").value = "";
     document.getElementById("salary").value = "";
-    console.log(salaryEntries[0]);
+  
   }
 }
 
+// Function to delete salary entry
 function del(button) {
   let tr = button.closest("tr");
   let salaryCell = tr.querySelectorAll("td")[1];
 
-  // The salary value is extracted, and the ₦ sign and commas are removed using replace(), then converted to a number using parseFloat().
+  
   let salary = parseFloat(
     salaryCell.innerText.replace("$", "").replace(/,/g, "")
   );
 
-  // Find the entry in the array and remove it
-  let rowIndex = Array.from(tbody.rows).indexOf(tr); // finds the index of the row in the table (tbody).
-  salaryEntries.splice(rowIndex, 1); // removes the corresponding salary entry from the array.
+  let rowIndex = Array.from(tbody.rows).indexOf(tr);
+  salaryEntries.splice(rowIndex, 1); // Remove entry from the array
 
-  // Update total salary
-  totalSalary -= salary;
+  // Recalculate total salary after deletion
+  recalculateTotalSalary();
 
-  // Save to localStorage
+  // Save updated entries to localStorage
   localStorage.setItem("salaryEntries", JSON.stringify(salaryEntries));
 
-  // Update the table display
+  
   updateTable();
 }
 
+// Function to edit salary entry
 function edit(button) {
-  let tr = button.closest("tr"); // Get the row (tr) containing the button
-  let tds = tr.querySelectorAll("td"); // Get all the td cells in this row
+  let tr = button.closest("tr");
+  let tds = tr.querySelectorAll("td");
 
-  // looping through each table cell (td), and makes the cells editable
+  
   tds.forEach((td) => {
-    td.contentEditable = "true"; // Make each cell editable
+    td.contentEditable = "true";
     td.style.border = "2px solid #000"; // Highlight cells in edit mode
   });
 
-  // Focus on the salary cell
+  
   let salaryCell = tds[1];
   salaryCell.focus();
 
-  // Disable the "Update" button and enable the "Save" button
+  
   button.style.display = "none";
   saveButton.disabled = false;
-  saveButton.style.backgroundColor = "#4CAF50";
+  saveButton.style.backgroundColor = "#4CAF50"; // Enable Save button
 }
 
+// Function to save edited salary entry
 function save() {
+  
   let rows = document.querySelectorAll("#table-body tr");
 
-  // Recalculate total salary and update entries from the table
+  
   salaryEntries = []; // Reset the array
 
-  // It loops through each row in the table
+  
   rows.forEach((row) => {
-    let tds = row.querySelectorAll("td"); // == every cell in the table row
-    // Get what is in salary cell, removes the ₦ and commas (,), and then converts it to a number
+    let tds = row.querySelectorAll("td");
     let updatedSalary = parseFloat(
       tds[1].innerText.replace("$", "").replace(/,/g, "")
     );
-    let updatedUsername = tds[0].innerText; // == whatever is in the username cell
-    let updatedDate = tds[2].innerText; // == whatever is in the date cell
+    let updatedUsername = tds[0].innerText;
+    let updatedDate = tds[2].innerText;
 
-    // Update the array with the new salary data
+    
     salaryEntries.push({
       username: updatedUsername,
       usersalary: updatedSalary,
       date: updatedDate,
     });
-
-    // Reformat salary with the ₦ symbol and commas
+    
     let formattedSalary = `₦${updatedSalary.toLocaleString()}`;
-    tds[1].innerText = formattedSalary; // puts the formatted salary in the salary cell on the table row
+    tds[1].innerText = formattedSalary;
 
-    // looping through each table cell (td), and makes cells non-editable
+    
     tds.forEach((td) => {
       td.contentEditable = "false";
       td.style.border = "";
     });
 
-    // Show the "Update" button again
-    let updateButton = row.querySelector("button[onclick='edit(this)']"); // selects the button with the same onclick function
+    let updateButton = row.querySelector("button[onclick='edit(this)']");
     updateButton.style.display = "inline-block";
   });
 
-  // Recalculate the total salary
-  totalSalary = salaryEntries.reduce((total, entry) => {
-    return (total += entry.usersalary);
-  }, 0);
-  // Calculates all the salary figures from the array and then return the value;
-  // The 0 is quite optional
+  // Recalculate total salary after changes
+  recalculateTotalSalary();
 
   updateTotalSalaryDisplay();
 
   // Save to localStorage
   localStorage.setItem("salaryEntries", JSON.stringify(salaryEntries));
 
-  // After saving, disable the Save button
+  
   saveButton.disabled = true;
-  saveButton.style.backgroundColor = "#ccc";
+  saveButton.style.backgroundColor = "#ccc"; // Disable Save button
 }
 
+// Function to recalculate total salary
+function recalculateTotalSalary() {
+  totalSalary = salaryEntries.reduce(
+    (total, entry) => total + entry.usersalary,
+    0
+  );
+}
+
+// Function to update the table
 function updateTable() {
   tbody.innerHTML = ""; // Clear the table before re-rendering
 
-  // loops through each object in the salaryEntries array, creates a table row(tr),
-  // and inside the table rows it adds the object's username, usersalary and the date,
-  // and then finally appends the table row to the table.
+  
   salaryEntries.forEach((entry) => {
     let tr = document.createElement("tr");
     tr.innerHTML = `
@@ -164,21 +167,28 @@ function updateTable() {
   updateTotalSalaryDisplay();
 }
 
+// Function to update total salary display
+
+
 function updateTotalSalaryDisplay() {
-  // shows the updated total salary
+
   totalSalaryElement.innerHTML = `Total Salary: $${totalSalary.toLocaleString()}`;
 }
 
 window.onload = function () {
   // Check if 'salaryEntries' exists in localStorage
   let storedEntries = localStorage.getItem("salaryEntries");
-  updateTotalSalaryDisplay();
-
-  // If data exists, parse it and populate the salaryEntries array
+  
   if (storedEntries) {
-    salaryEntries = JSON.parse(storedEntries);
+    salaryEntries = JSON.parse(storedEntries); // Parse the saved salaryEntries
+
+    // Recalculate the total salary based on the salaryEntries
+    recalculateTotalSalary();
 
     // Re-render the table
     updateTable();
   }
+
+  // Display the total salary on page load
+  updateTotalSalaryDisplay();
 };
